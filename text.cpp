@@ -179,6 +179,10 @@ const char* SHOW_ORIGINAL = u8"Original text";
 const char* SHOW_ORIGINAL_INFO = u8R"(Original text will not be shown
 Only works if this extension is used directly after a translation extension)";
 const char* SIZE_LOCK = u8"Size lock";
+const char* AUTO_RESIZE_WINDOW_HEIGHT = u8"Auto resize window height";
+const char* CLICK_THROUGH = u8"Click through";
+const char* HIDE_TEXT = u8"Hide text";
+const char* HIDE_TEXT_MOUSEOVER = u8"Hide text on mouseover";
 const char* OPACITY = u8"Opacity";
 const char* BG_COLOR = u8"Background color";
 const char* TEXT_COLOR = u8"Text color";
@@ -884,6 +888,8 @@ Questo file deve essere codificato in UTF-8.)";
 	SHOW_ORIGINAL_INFO = u8R"(Testo originale non sarà mostrato
 Funziona solo se questa estenzione è usata direttamente dopo un'estensione di traduzione)";
 	SIZE_LOCK = u8"Lock delle dimensione";
+	AUTO_RESIZE_WINDOW_HEIGHT = u8"Auto resize altezza finestra";
+	CLICK_THROUGH = u8"Clicca attraverso";
 	OPACITY = u8"Opacità";
 	BG_COLOR = u8"Colore dello sfondo";
 	TEXT_COLOR = u8"Colore del testo";

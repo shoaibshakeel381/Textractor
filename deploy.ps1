@@ -1,36 +1,36 @@
 ﻿param([string]$version)
 
-cd $PSScriptRoot;
+Set-Location $PSScriptRoot;
 mkdir -Force -Verbose builds;
-cd builds;
+Set-Location builds;
 mkdir -Force -Verbose x86;
 mkdir -Force -Verbose x64;
 
 foreach ($language in @{
 	ENGLISH="";
-	SPANISH="Spanish";
-	SIMPLIFIED_CHINESE="Simplified-Chinese";
-	RUSSIAN="Russian";
-	TURKISH="Turkish";
-	INDONESIAN="Indonesian";
-	PORTUGUESE="Portuguese";
-	THAI="Thai";
-	KOREAN="Korean";
-	ITALIAN="Italian";
-	FRENCH="French"
+	# SPANISH="Spanish";
+	# SIMPLIFIED_CHINESE="Simplified-Chinese";
+	# RUSSIAN="Russian";
+	# TURKISH="Turkish";
+	# INDONESIAN="Indonesian";
+	# PORTUGUESE="Portuguese";
+	# THAI="Thai";
+	# KOREAN="Korean";
+	# ITALIAN="Italian";
+	# FRENCH="French"
 }.GetEnumerator())
 {
 	$folder = "Textractor-$($language.Value)-$version";
-	rm -Force -Recurse -Verbose $folder;
+	Remove-Item -Force -Recurse -Verbose $folder;
 	mkdir -Force -Verbose $folder;
 
 	foreach ($arch in @("x86", "x64"))
 	{
-		cd $arch;
+		Set-Location $arch;
 		$VS_arch = if ($arch -eq "x86") {"Win32"} else {"x64"};
-		&"C:\Program Files\CMake\bin\cmake" -G "Visual Studio 16 2019" -A"$VS_arch" -DVERSION="$version" -DTEXT_LANGUAGE="$($language.Key)" -DCMAKE_BUILD_TYPE="Release" ../..;
-		&"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\devenv" Textractor.sln /build "Release|$VS_arch";
-		cd ..;
+		&"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -G "Visual Studio 17 2022" -A"$VS_arch" -DVERSION="$version" -DTEXT_LANGUAGE="$($language.Key)" -DCMAKE_BUILD_TYPE="Release" ../..;
+		&"C:\Program Files\Microsoft Visual Studio\2022\Preview\Common7\IDE\devenv" Textractor.sln /build "Release|$VS_arch";
+		Set-Location ..;
 		mkdir -Force -Verbose "$folder/$arch";
 		foreach ($file in @(
 			"Textractor.exe",
@@ -38,7 +38,7 @@ foreach ($language in @{
 			"texthook.dll"
 		))
 		{
-			copy -Force -Recurse -Verbose -Destination "$folder/$arch" -Path "Release_$arch/$file";
+			Copy-Item -Force -Recurse -Verbose -Destination "$folder/$arch" -Path "Release_$arch/$file";
 		}
 		foreach ($extension in @(
 			"Bing Translate",
@@ -49,6 +49,7 @@ foreach ($language in @{
 			"DevTools Systran Translate",
 			"Extra Newlines",
 			"Extra Window",
+			"Resizable Extra Window",
 			"Google Translate",
 			"Lua",
 			"Regex Filter",
@@ -58,16 +59,21 @@ foreach ($language in @{
 			"Remove 30 Repeated Sentences",
 			"Replacer",
 			"Styler",
+			"Join Sentences 250msec",
+			"Join Sentences 500msec",
+			"Join Sentences 1sec",
+			"Join Sentences 2sec",
+			"Join Sentences 3sec",
 			"Thread Linker"
 		))
 		{
-			copy -Force -Recurse -Verbose -Destination "$folder/$arch/$extension.xdll" -Path "Release_$arch/$extension.dll";
+			Copy-Item -Force -Recurse -Verbose -Destination "$folder/$arch/$extension.xdll" -Path "Release_$arch/$extension.dll";
 		}
 	}
-	&"C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe" sign /a /v /t "http://timestamp.digicert.com"  /fd SHA256 @(dir "$folder\**\*");
+	&"C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe" sign /a /v /t "http://timestamp.digicert.com"  /fd SHA256 @(Get-ChildItem "$folder\**\*");
 }
 
-rm -Force -Recurse -Verbose "Runtime";
+Remove-Item -Force -Recurse -Verbose "Runtime";
 mkdir -Force -Verbose "Runtime";
 foreach ($arch in @("x86", "x64"))
 {
@@ -85,16 +91,16 @@ foreach ($arch in @("x86", "x64"))
 		"styles"
 	))
 	{
-		copy -Force -Recurse -Verbose -Destination "Runtime/$arch/$file" -Path "Release_$arch/$file";
+		Copy-Item -Force -Recurse -Verbose -Destination "Runtime/$arch/$file" -Path "Release_$arch/$file";
 	}
-	copy -Force -Recurse -Verbose -Destination "Runtime/$arch" -Path "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Redist/MSVC/**/$arch/Microsoft.VC142.CRT/*"
+	Copy-Item -Force -Recurse -Verbose -Destination "Runtime/$arch" -Path "C:/Program Files/Microsoft Visual Studio/2022/Preview/VC/Redist/MSVC/**/$arch/Microsoft.VC143.CRT/*"
 }
 
-rm -Force -Recurse -Verbose "Textractor";
+Remove-Item -Force -Recurse -Verbose "Textractor";
 mkdir -Force -Verbose "Textractor";
-copy -Force -Recurse -Verbose -Destination "Textractor" -Path @("Runtime/*", "Textractor--$version/*");
+Copy-Item -Force -Recurse -Verbose -Destination "Textractor" -Path @("Runtime/*", "Textractor--$version/*");
 &"C:\Program Files\7-Zip\7z" a "Textractor-$version-Zip-Version-English-Only.zip" Textractor/
 
-cd ..;
-&"C:\Program Files (x86)\Inno Setup 6\iscc" -DVERSION="$version" installer.iss;
-&"C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe" sign /a /v /t "http://timestamp.digicert.com"  /fd SHA256 "Builds/Textractor-$version-Setup.exe";
+Set-Location ..;
+# &"C:\Program Files (x86)\Inno Setup 6\iscc" -DVERSION="$version" installer.iss;
+# &"C:\Program Files (x86)\Windows Kits\10\App Certification Kit\signtool.exe" sign /a /v /t "http://timestamp.digicert.com"  /fd SHA256 "Builds/Textractor-$version-Setup.exe";
