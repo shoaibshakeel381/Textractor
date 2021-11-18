@@ -223,6 +223,17 @@ All text in this file outside of a replacement command is ignored.
 A caret (^) acts as a wildcard that matches any other single character.
 Whitespace in original_text is ignored, but replacement_text can contain spaces, newlines, etc.
 This file must be encoded in Unicode (UTF-16 Little Endian).)";
+const wchar_t* REGEX_REPLACER_INSTRUCTIONS = LR"(This file only does anything when the "Regex Replacer" extension is used.
+Replacement commands must be formatted like this:
+|REGEX|regular_expression|BECOMES|replacement_text|MODIFIER|modifiers|END|
+replacement_text can reference capture groups with a $ followed by their number (e.g. $1 references first capture group).
+modifiers can contain the following:
+"g" the replacement is global.
+"i" the replacement ignores the case.
+If empty the replacement is only for the first match and case sensitive.
+All text in this file outside of a replacement command is ignored.
+This file must be encoded in Unicode (UTF-16 Little Endian).
+Learn, build, & test Regular Expressions: https://regexr.com/)";
 const char* THREAD_LINKER = u8"Thread Linker";
 const char* LINK = u8"Link";
 const char* UNLINK = u8"Unlink";
@@ -929,6 +940,17 @@ I comandi di rimpiazzo devono essere formattati cosi:
 Tutto il testo in questo file all'infuori di un comando di rimpiazzo è ignorato.
 La spaziatura nel testo_originale è ignorato, ma testo_sostituito può contenere spaziature, ritorni a capo, ecc.
 Questo file deve essere codificato in Unicode (UTF-16 Little Endian).)";
+	REGEX_REPLACER_INSTRUCTIONS = LR"(Questo file fa qualcosa solo quando l'estenzione "Regex Replacer" è utilizzata.
+I comandi di sostituzione devono essere formattati cosi:
+|REGEX|espressione_regolare|BECOMES|testo_sostituito|MODIFIER|modificatori|END|
+Il parametro "MODIFIER" può contenere i seguenti modificatori:
+"g" la sostituzione è globale.
+"i" la sostituzione ignora maiuscole/minuscole.
+Se il modificatore è vuoto, la sostituzione viene applicata alla sola prima corrispondenza
+e fa distinzione tra maiuscole e minuscole.
+Tutto il testo in questo file all'infuori di un comando di sostituzione è ignorato.
+Questo file deve essere codificato in Unicode (UTF-16 Little Endian).
+Apprendere, creare e testare Espressioni Regolari: https://regexr.com/)";
 	THREAD_LINKER = u8"Collegatore di thread";
 	LINK = u8"Collegamento";
 	THREAD_LINK_FROM = u8"Numero di thread da cui collegarsi";
