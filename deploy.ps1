@@ -60,12 +60,8 @@ foreach ($language in @{
 			"Remove 30 Repeated Sentences",
 			"Replacer",
 			"Styler",
-			"Join Sentences 250msec",
-			"Join Sentences 500msec",
-			"Join Sentences 1sec",
-			"Join Sentences 2sec",
-			"Join Sentences 3sec",
-			"Thread Linker"
+			"Thread Linker",
+			"Thread Linker Message Waiter"
 		))
 		{
 			Copy-Item -Force -Recurse -Verbose -Destination "$folder/$arch/$extension.xdll" -Path "Release_$arch/$extension.dll";

@@ -237,6 +237,8 @@ Learn, build, & test Regular Expressions: https://regexr.com/)";
 const char* THREAD_LINKER = u8"Thread Linker";
 const char* LINK = u8"Link";
 const char* UNLINK = u8"Unlink";
+const char* THRAD_MESSAGE_WAIT_TITLE = u8"Thread Linker Message Waiter";
+const char* THRAD_MESSAGE_WAIT = u8"Time to wait for messages (ms)";
 const char* THREAD_LINK_FROM = u8"Thread number to link from";
 const char* THREAD_LINK_TO = u8"Thread number to link to";
 const char* HEXADECIMAL = u8"Hexadecimal";
