@@ -81,6 +81,7 @@ namespace
 	Ui::MainWindow ui;
 	std::atomic<DWORD> selectedProcessId = 0;
 	ExtenWindow* extenWindow = nullptr;
+	std::wstring extenDefPath = L"./";
 	concurrency::reader_writer_lock configFoldersMutex;
 	std::unordered_map<DWORD, std::wstring> configFolders;
 	std::unordered_set<DWORD> alreadyAttached;
@@ -130,7 +131,7 @@ namespace
 		{ "hook address", (int64_t)thread.tp.addr },
 		{ "text handle", thread.handle },
 		{ "text name", (int64_t)thread.name.c_str() },
-		{ "config folder", thread.tp.processId ? (int64_t)configFolders.at(thread.tp.processId).c_str() : (int64_t)L"./" },
+		{ "config folder", thread.tp.processId ? (int64_t)configFolders.at(thread.tp.processId).c_str() : (int64_t)extenDefPath.c_str() },
 		{ "add sentence", (int64_t)AddSentence },
 		{ "add text", (int64_t)AddText },
 		{ "get selected process id", (int64_t)GetSelectedProcessId },
@@ -586,7 +587,7 @@ namespace
 		{
 			ui.processCombo->removeItem(ui.processCombo->findText(QString::number(processId, 16).toUpper() + ":", Qt::MatchStartsWith));
 		}, Qt::BlockingQueuedConnection);
-		loadExtensions();
+		loadExtensions(extenDefPath);
 	}
 
 	void ThreadAdded(TextThread& thread)
@@ -706,7 +707,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 					if (processName.value_or(L"").find(L"\\" + arg.substr(2)) != std::string::npos) Host::InjectProcess(processId);
 			if (arg[1] == L'c' || arg[1] == L'C')
 				ViewThread(1);
+
+			if (arg[1] == L'e' || arg[1] == L'E')
+			{
+				extenDefPath = arg.substr(2);
+				extenDefPath += L"/";
+				if (std::filesystem::exists(extenDefPath)) loadExtensions(extenDefPath);
+				else WriteConsoleW(GetStdHandle(STD_OUTPUT_HANDLE), L"\n\n-e path not found!", 20, DUMMY, NULL);
+			}
 		}
+
 	std::thread([] { for (; ; Sleep(10000)) AttachSavedProcesses(); }).detach();
 }
 
