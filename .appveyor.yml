@@ -1,6 +1,7 @@
 version: '{branch}-{build}'
 configuration: RelWithDebInfo
 clone_folder: C:\Textractor
+skip_branch_with_pr: true
 
 branches:
   only:
