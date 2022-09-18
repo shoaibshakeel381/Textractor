@@ -1,6 +1,7 @@
 #include "extension.h"
 #include "blockmarkup.h"
 #include <fstream>
+#include <process.h>
 
 extern const wchar_t* REGEX_REPLACER_INSTRUCTIONS;
 extern const wchar_t* REPOSITORY;
