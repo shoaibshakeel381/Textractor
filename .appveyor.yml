@@ -1,7 +1,10 @@
 version: '{branch}-{build}'
 configuration: RelWithDebInfo
 clone_folder: C:\Textractor
-skip_branch_with_pr: false
+
+branches:
+  only:
+    - master
 
 environment:
   matrix:
