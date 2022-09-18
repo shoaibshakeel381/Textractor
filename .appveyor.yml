@@ -29,11 +29,3 @@ build:
 after_build:
   - 7z a Textractor-Alpha%APPVEYOR_BUILD_NUMBER%-%arch%.zip C:\Textractor\builds\RelWithDebInfo_%arch%\*
   - appveyor PushArtifact Textractor-Alpha%APPVEYOR_BUILD_NUMBER%-%arch%.zip
-
-notifications:
-- provider: Email
-  to:
-  - akashmozumdar@gmail.com
-  on_build_success: false
-  on_build_failure: true
-  on_build_status_changed: true
