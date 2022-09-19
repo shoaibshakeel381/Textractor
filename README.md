@@ -1,5 +1,4 @@
-# Textractor
-[![Build status](https://ci.appveyor.com/api/projects/status/ya9591l2ma0wo0ww/branch/master?svg=true)](https://ci.appveyor.com/project/shoaibshakeel381/textractor/branch/master)
+# Textractor [![Build status](https://ci.appveyor.com/api/projects/status/ya9591l2ma0wo0ww/branch/master?svg=true)](https://ci.appveyor.com/project/shoaibshakeel381/textractor/branch/master)
 
 ![How it looks](screenshot.png)
 
